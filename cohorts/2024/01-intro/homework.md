@@ -15,6 +15,11 @@ You can get the version information using the `__version__` field:
 pd.__version__
 ```
 
+```bash
+$ python3 -c "import pandas as pd; print(pd.__version__)"
+2.2.2
+```
+
 ### Getting the data 
 
 For this homework, we'll use the Laptops Price dataset. Download it from 
@@ -36,7 +41,7 @@ How many records are in the dataset?
 
 - 12
 - 1000
-- 2160
+- **2160** (answer)
 - 12160
 
 ### Q3. Laptop brands
@@ -44,7 +49,7 @@ How many records are in the dataset?
 How many laptop brands are presented in the dataset?
 
 - 12
-- 27
+- **27** (answer)
 - 28
 - 2160
 
@@ -54,7 +59,7 @@ How many columns in the dataset have missing values?
 
 - 0
 - 1
-- 2
+- **2** (answer)
 - 3
 
 ### Q5. Maximum final price
@@ -64,7 +69,7 @@ What's the maximum final price of Dell notebooks in the dataset?
 - 869
 - 3691
 - 3849
-- 3936
+- **3936** (answer)
 
 ### Q6. Median value of Screen
 
@@ -78,7 +83,7 @@ Has it changed?
 > Hint: refer to existing `mode` and `median` functions to complete the task.
 
 - Yes
-- No
+- **No**
 
 ### Q7. Sum of weights
 
@@ -96,7 +101,7 @@ Has it changed?
 - 0.43
 - 45.29
 - 45.58
-- 91.30
+- **91.30** (anwer)
 
 
 ## Submit the results
