@@ -1,11 +1,34 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from io import BytesIO
+from urllib import request
+
+import numpy as np
+
+from PIL import Image
 import tflite_runtime.interpreter as tflite
-from keras_image_helper import create_preprocessor
 
 
-preprocessor = create_preprocessor('xception', target_size=(150, 150))
+def download_image(url):
+    with request.urlopen(url) as resp:
+        buffer = resp.read()
+    stream = BytesIO(buffer)
+    img = Image.open(stream)
+    return img
+
+
+def prepare_image(img, target_size):
+    if img.mode != 'RGB':
+        img = img.convert('RGB')
+    img = img.resize(target_size, Image.NEAREST)
+    return img
+
+
+def preprocess_input(X):
+    temp_array = np.array(X, dtype=np.float32)
+    temp_array = (temp_array / 255.0 * 2) - 1
+    return temp_array
 
 
 interpreter = tflite.Interpreter(model_path='bees-wasps-v2.tflite')
@@ -31,26 +54,20 @@ classes = [
 # url = 'http://bit.ly/mlbookcamp-pants'
 
 def predict(url):
-    X = preprocessor.from_url(url)
 
-    """    interpreter.set_tensor(input_index, X)
-        interpreter.invoke()
-        preds = interpreter.get_tensor(output_index)
+    img = download_image(url)
+    img = np.array(prepare_image(img, (150, 150)))
 
-        float_predictions = preds[0].tolist()
+    x = img.reshape((1, *img.shape))
+    x = preprocess_input(x)
 
-        return dict(zip(classes, float_predictions))"""
-
-
-    interpreter.set_tensor(input_index, X)
+    interpreter.set_tensor(input_index, x)
     interpreter.invoke()
     preds = interpreter.get_tensor(output_index)
-
-    return preds 
+    return preds.tolist()
 
 
 def lambda_handler(event, context):
     url = event['url']
     result = predict(url)
     return result
-
